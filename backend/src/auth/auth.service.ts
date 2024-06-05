@@ -10,7 +10,6 @@ import { qrcode, toDataURL } from 'qrcode';
 export class AuthService {
   async signIn(signInDto: SignInDto) {
     const secretKey = process.env.PRIVATE_CAPTCHA_PRIVATE_KEY;
-
     const formData = `secret=${secretKey}&response=${signInDto.token}`;
     let res;
     try {
@@ -23,15 +22,37 @@ export class AuthService {
           },
         },
       );
-      console.log(res.data);
+
+      if (res.data.score < 0.5) {
+        return {
+          type: 'error',
+          message: 'Captcha verification failed.',
+        };
+      }
+
+      if (signInDto.name !== this.MOCK_USER.username) {
+        return {
+          type: 'error',
+          message: 'User not found.',
+        };
+      }
+
+      if (signInDto.password !== this.MOCK_USER.password) {
+        return {
+          type: 'error',
+          message: 'Password is incorrect.',
+        };
+      }
+
       return {
         type: 'success',
+        message: 'Login successful.',
         data: res.data,
       };
     } catch (error) {
       return {
         type: 'error',
-        error: error.message,
+        message: error.message,
       };
     }
   }
@@ -62,8 +83,8 @@ export class AuthService {
     }
   };
   MOCK_USER = {
-    username: 'duc-zodinet',
-    password: 'duc',
+    username: 'duczodinet',
+    password: '12345',
     is2FAEnabled: true,
     secret: this.generateUniqueSecret(),
   };

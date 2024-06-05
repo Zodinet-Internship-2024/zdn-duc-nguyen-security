@@ -22,13 +22,13 @@ export default function Qrcode() {
   };
 
   return (
-    <div className="bg-white h-screen  w-full mx-auto ">
+    <div className="bg-white  flex flex-col justify-center items-center h-screen  w-full mx-auto ">
       {/* <img src={imgUrl} alt="123" /> */}
       <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
         Enter
         <span className="text-blue-600 dark:text-blue-500"> OTP #1</span> .
       </h1>
-      <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+      <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 mb-4">
         Here at Flowbite we focus on markets where technology, innovation, and
         capital can unlock long-term value and drive economic growth.
       </p>

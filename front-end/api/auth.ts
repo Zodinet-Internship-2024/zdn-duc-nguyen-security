@@ -1,7 +1,7 @@
 import axios from "axios";
 import { verify } from "crypto";
 interface FormData {
-  email: string;
+  name: string;
   password: string;
 }
 export const signIn = async (formData: FormData, gRecaptchaToken: string) => {

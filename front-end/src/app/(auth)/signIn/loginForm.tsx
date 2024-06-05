@@ -2,26 +2,27 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-import { GoogleReCaptcha, useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { signIn } from "../../../../api/auth";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const router = useRouter();
-  //   const [token, setToken] = useState<string>("");
   const [formData, setFormData] = useState({
-    email: "",
+    name: "",
     password: "",
   });
+  console.log(formData);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const handleSubmit = async () => {
     const gRecaptchaToken = await executeRecaptcha("inquirySubmit");
-    const res = await signIn(formData, gRecaptchaToken);
-    console.log(res);
-    if (res.data.score > 0.5) {
-      router.push(`/qrcode`);
+    const { type, message, data } = await signIn(formData, gRecaptchaToken);
+    if (type === "error") {
+      return alert(message);
     }
+
+    router.push(`/qrcode`);
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,9 +60,9 @@ export default function LoginForm() {
                     Your email
                   </label>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
+                    type="name"
+                    name="name"
+                    id="name"
                     onChange={handleChangeInput}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
